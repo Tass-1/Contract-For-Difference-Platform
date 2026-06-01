@@ -1,0 +1,139 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular;
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+    --color-profit: #0ecb81;
+    --color-loss: #f6465d;
+    --color-og: var(--og);
+    --color-card: #1e2329;
+    --color-border-custom: #2b3139;
+}
+:root {
+  --background: #000000;
+  --og: #0b0e11;
+  --foreground: #eaecef;
+  --card: #1e2329;
+  --card-foreground: #eaecef;
+  --popover: #1e2329;
+  --popover-foreground: #eaecef;
+  --primary: #0ecb81;
+  --primary-foreground: #0b0e11;
+  --secondary: #2b3139;
+  --secondary-foreground: #eaecef;
+  --muted: #2b3139;
+  --muted-foreground: #848e9c;
+  --accent: #2b3139;
+  --accent-foreground: #eaecef;
+  --destructive: #f6465d;
+  --border: #2b3139;
+  --input: #2b3139;
+  --ring: #0ecb81;
+  --radius: 0.5rem;
+}
+html,body {
+  background-color: #000000 !important;
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+.wallet-adapter-button {
+  background-color:  #f0b90b !important; 
+  border: 1px solid #2b3139 !important;
+  color: #1e2329 !important; 
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  border-radius: 4px !important; 
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover State */
+.wallet-adapter-button:not([disabled]):hover {
+  background-color: #fcd535 !important;
+  box-shadow: 0 4px 12px rgba(240, 185, 11, 0.2);
+  transform: translateY(-1px);
+}
+
+.wallet-adapter-dropdown-list {
+  background: #1e2329 !important; 
+  border: 1px solid #2b3139 !important; 
+  border-radius: 4px !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+  padding: 4px !important;
+  z-index: 9999 !important;
+}
+
+
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
