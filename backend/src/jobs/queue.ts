@@ -1,9 +1,12 @@
 import {Queue} from "bullmq";
+import IORedis from "ioredis";
 
-export const connection = {
-    host: "localhost",
-    port: 6379
-}
+
+const redisUrl = process.env.REDIS_URL;
+
+export const connection = redisUrl 
+    ? new IORedis(redisUrl, { maxRetriesPerRequest: null }) 
+    : new IORedis({ host: "localhost", port: 6379, maxRetriesPerRequest: null });
 
 export const LimitOrderQueue = new Queue("limitOrders" , {connection});
 

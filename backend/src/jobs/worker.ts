@@ -4,7 +4,7 @@ import {connection} from "./queue.ts";
 import redis  from "../config/Redis.ts";
 import schema from "../models/schema.ts";
 import {UserModel} from "../models/schema.ts";
-import mongoose = require("mongoose");
+import mongoose from "mongoose";
 import {OrderModel} from "../models/schema.ts";
 
 const worker = new Worker(
