@@ -97,11 +97,12 @@ export default function NavBar(){
             <NavigationMenu  >
         <NavigationMenuList className="gap-10">
             <NavigationMenuItem >
-            <Link href="/" legacyBehavior passHref >
-            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+            <NavigationMenuLink asChild>
+                <Link href="/" className={`${navigationMenuTriggerStyle()} `}>
                 Home
+                </Link>
             </NavigationMenuLink>
-            </Link>
+            
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/trade" legacyBehavior passHref>
