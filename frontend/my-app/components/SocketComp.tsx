@@ -2,14 +2,16 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useStore } from "@/app/store/useStore";
+import { api } from '@/lib/api';
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function SocketListener() {
     const { isLoggedIn, setLivePosition, setLivePrice,setChartData } = useStore();
     
     useEffect(() => {
         const token = localStorage.getItem("authorization");
         const prevention = token ? { auth:  { authorization: token } }: {}
-        const socket = io("http://localhost:4000", prevention);
+        const socket = io(BASE_URL, prevention);
 
 
         ["BTCUSDT", "SOLUSDT", "ETHUSDT"].forEach(sym => {
