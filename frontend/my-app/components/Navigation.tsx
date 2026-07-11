@@ -8,7 +8,7 @@ import AuthButton from "./AuthButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useWallet } from "@solana/wallet-adapter-react";
-
+import { api } from '@/lib/api';
 
 
 
@@ -26,14 +26,14 @@ export default function NavBar(){
         console.log("Signed in")
         const pubkey = wallet.publicKey?.toBase58();
         if(pubkey){
-                const response =  await axios.post("http://localhost:4000/auth/nonce" , {
+                const response =  await api.post("/auth/nonce" , {
                 pubkey: pubkey
             })
             const nonce = response.data.nonce;
             const message = new TextEncoder().encode(nonce);
             const sign = await wallet.signMessage?.(message);
             console.log(sign);
-            const response2 = await axios.post("http://localhost:4000/auth/verify" , {
+            const response2 = await api.post("/auth/verify" , {
                 pubkey: pubkey,
                 sign: Array.from(sign)
             })
@@ -42,7 +42,7 @@ export default function NavBar(){
                 localStorage.setItem('authorization' , token);
             
                 setIsLoggedIn(true);
-                const respon = await axios.post("http://localhost:4000/getBalance" ,{}, {
+                const respon = await api.post("/getBalance" ,{}, {
                     headers:{
                         authorization: localStorage.getItem("authorization")
                     }

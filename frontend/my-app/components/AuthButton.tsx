@@ -3,7 +3,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import axios from "axios";
 import {Buffer} from 'buffer';
 import { Button } from "./ui/button";
-
+import { api } from '@/lib/api';
 
 export default function AuthButton() {
 
@@ -12,7 +12,7 @@ export default function AuthButton() {
 
     const handleSignIn = async () => {
         const pubkey = wallet.publicKey?.toBase58();
-        const response =  await axios.post("http://localhost:4000/auth/nonce" , {
+        const response =  await api.post("/auth/nonce" , {
             pubkey: pubkey
         })
         const nonce = response.data.nonce;

@@ -3,7 +3,7 @@ import { generateKeyPair } from "@solana/kit"
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRef } from "react";
 import axios from "axios";
-
+import { api } from '@/lib/api';
 
 
 export default function WithdrawMoney () {
@@ -11,7 +11,7 @@ export default function WithdrawMoney () {
     const WithdrawAmount = useRef(null)
     const wallet = useWallet();
     async function withraw(){
-        const response = await axios.post("http://localhost:4000/withdraw" , {
+        const response = await api.post("/withdraw" , {
             amount: Number(WithdrawAmount.current?.value)
         },{
                 headers:{

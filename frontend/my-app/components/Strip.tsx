@@ -4,6 +4,7 @@ import axios from "axios"
 import { useEffect, useState } from "react";
 import GetPrice from "./GetPrice";
 
+
 export default function Strip(){
     const symbol = useStore((state) => state.symbol);
     

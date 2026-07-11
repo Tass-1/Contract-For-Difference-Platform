@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStore } from "../store/useStore";
 import { useRouter } from "next/navigation";
+import { api } from '@/lib/api';
 
 export default function Markets (){
     interface BinanceData{

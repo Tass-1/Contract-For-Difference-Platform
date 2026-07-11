@@ -4,7 +4,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useRef } from "react";
-
+import { api } from '@/lib/api';
 
 
 
@@ -39,7 +39,7 @@ export default function DepositFunc(){
                 signature:signature
 
             })
-            const response = await axios.post("http://localhost:4000/deposit" , {
+            const response = await api.post("/deposit" , {
                 amount:inputSol,
                 signature:signature
             },{

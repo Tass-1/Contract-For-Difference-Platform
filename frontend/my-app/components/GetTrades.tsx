@@ -4,7 +4,7 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-
+import { api } from '@/lib/api';
 
 
 
@@ -14,7 +14,7 @@ export default function GetTrades(){
     
     const [pos , setPos] = useState<any>([])
     async function GetTrade(){
-        const response = await axios.post("http://localhost:4000/api/trades" ,{} , {
+        const response = await api.post("/api/trades" ,{} , {
             headers:{
                 authorization: localStorage.getItem("authorization")
             }

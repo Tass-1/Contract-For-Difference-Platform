@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { api } from '@/lib/api';
 
 
 
@@ -11,7 +11,7 @@ async function GetPositions(){
     
     const [pos , setPos] = useState<any>([])
     async function GetPos(){
-        const response = await axios.post("http://localhost:4000/api/positions" ,{} , {
+        const response = await api.post("/api/positions" ,{} , {
             headers:{
                 authorization: localStorage.getItem("authorization")
             }
@@ -53,7 +53,7 @@ export default function Positions() {
    const [rel , setRel] = useState(true);
    async function Close(sym:string , id:string){
     console.log(id)
-    const response = await axios.post("http://localhost:4000/api/closePositions" , {
+    const response = await api.post("/api/closePositions" , {
       symbol: sym,
       positionId: id
     },{
@@ -70,7 +70,7 @@ export default function Positions() {
    }
     async function GetPos(){
         console.log("get pos called")
-        const response = await axios.post("http://localhost:4000/api/positions" ,{
+        const response = await api.post("/api/positions" ,{
             option:fun
         } , {
             headers:{

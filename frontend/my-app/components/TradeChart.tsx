@@ -4,6 +4,7 @@ import axios from 'axios';
 import { createChart, CandlestickSeries, CandlestickData, ISeriesApi, Time } from 'lightweight-charts';
 import { useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { api } from '@/lib/api';
 
 export default function TradeCharts({symbol} : {symbol : string}) {
     const container = useRef(null);
@@ -63,7 +64,7 @@ export default function TradeCharts({symbol} : {symbol : string}) {
             // console.log("Series created:", candlestickSeries);
             seriesRef.current = candlestickSeries;
             const rawData = async () => {
-                const response = await axios.post("http://localhost:4000/api/history" , {symbol:symbol}, {
+                const response = await api.post("/api/history" , {symbol:symbol}, {
             headers:{
                 authorization: localStorage.getItem("authorization")
             }

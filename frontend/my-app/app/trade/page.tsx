@@ -8,6 +8,7 @@ import Positions from "@/components/GetPositions";
 import WalletAdapter from "@/components/walletAdapter"; 
 import { useStore } from "../store/useStore";
 import TickerTape from "@/components/Ticker";
+import { api } from '@/lib/api';
 
 export default function Trade() {
     const Nsymbol = useStore(state => state.symbol)

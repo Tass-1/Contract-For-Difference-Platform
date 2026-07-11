@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useStore } from "@/app/store/useStore";
 import axios from "axios";
 import GetPrice from "./GetPrice";
+import { api } from '@/lib/api';
 
 export default function OrderForm() {
     const symbol = useStore((state) => state.symbol);
@@ -77,7 +78,7 @@ function OrderInputs( {side, orderType, symbol, leverage, setLeverage, balance}:
 
         if( type == "Market"){
             console.log("DOing work for market ordr")
-            const response = await axios.post("http://localhost:4000/order",{
+            const response = await api.post("/order",{
                 margin: margin,
                 leverage: leverageNum,
                 symbol: symbol,
@@ -95,7 +96,7 @@ function OrderInputs( {side, orderType, symbol, leverage, setLeverage, balance}:
          }
          else{
             console.log("DOing work for limit ordr")
-            const response = await axios.post("http://localhost:4000/limit-order",{
+            const response = await api.post("/limit-order",{
                 margin: margin,
                 leverage: leverageNum,
                 symbol: symbol,

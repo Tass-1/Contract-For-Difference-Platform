@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useRef } from "react";
+import { api } from '@/lib/api';
 
 
 export default function Order() {
@@ -23,7 +24,7 @@ export default function Order() {
 
         if( type?.current?.value == "Market"){
             console.log("DOing work for market ordr")
-            const response = await axios.post("http://localhost:4000/order",{
+            const response = await api.post("/order",{
                 margin: margin,
                 leverage: leverageNum,
                 symbol: symbol?.current?.value,
@@ -40,7 +41,7 @@ export default function Order() {
          }
          else{
             console.log("DOing work for limit ordr")
-            const response = await axios.post("http://localhost:4000/limit-order",{
+            const response = await api.post("/limit-order",{
                 margin: margin,
                 leverage: leverageNum,
                 symbol: symbol?.current?.value,

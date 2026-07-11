@@ -11,7 +11,7 @@ import LivePnl from "@/components/LivePnl";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { divideBinaryFixedPoint } from "@solana/kit";
-
+import { api } from '@/lib/api';
 
 
 export default function History(){
@@ -22,7 +22,7 @@ export default function History(){
     const isLoggedIn = useStore(state => state.isLoggedIn)
     async function getData(){
             console.log("get pos called")
-            const response = await axios.post("http://localhost:4000/api/positions" ,{
+            const response = await api.post("/api/positions" ,{
                 option:fun
             } , {
                 headers:{
