@@ -88,26 +88,57 @@ function TxnContent(){
     }
     
     return(
-        <div className="">
-               
-                <div className="flex py-10 items-center h-screen flex-col rounded-xl bg-og">
-                    <div className="mt-5 p-5 bg-muted rounded-xl">
-                        <div className="flex py-1 px-1 w-xl justify-between items-center rounded-xl gap-1 bg-black">
-                            <div className={` w-full text-mute px-1 py-1 rounded-xl text-xl font-thin flex justify-center cursor-pointer ${option == "Withdraw" ? "bg-yellow-300/90 text-black" : null}`} onClick={() => {setOption("Withdraw")}} > Withdraw </div>
-                            <div className={` w-full text-mute px-1 font-sans py-1 text-xl rounded-xl font-thin flex justify-center cursor-pointer ${option == "Deposit" ? "bg-[#f2c14b] text-black" : null}`} onClick={() => {setOption("Deposit")}}> Deposit</div>
-                        </div>
-                        <div>
-                            <input type="text" placeholder="Amount (SOL)" onChange={(e) => setAmt(e.target.value)} className="bg-og p-4 m-4 rounded-xl h-40 w-135 text-6xl text-[#4c5666]" />
-                        </div>
-                        <div className="bg-black/90 p-4 mx-4 my-1 rounded-xl h-20 w-135 text-5xl text-[#4c5666]"> 
-                            {(Number(amt) * currPrice).toFixed(4)}
-                        </div>
-                        <div className="p-4 flex items-center justify-center">
-                            <button className = {`bg-profit text-black cursor-pointer rounded-md font-medium font-sans p-3 w-100 h-20 text-3xl hover:scale-102 hover:bg-[#26a698] active:scale-100 transition-all duration-300 ease-out ${!isLoggedIn ? "disabled" : null} `} onClick={submit}> {option}</button>
-                    
-                        </div>
+        <div className="flex justify-center items-center min-h-screen bg-og px-4">
+
+            <div className="w-full max-w-md rounded-3xl bg-muted border border-white/10 shadow-2xl shadow-black/50 p-2">
+
+                <div className="flex p-1 justify-between items-center rounded-2xl gap-1 bg-black/40 m-2">
+                    <button
+                        type="button"
+                        onClick={() => setOption("Withdraw")}
+                        className={`w-full py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all cursor-pointer ${option == "Withdraw" ? "bg-white/10 text-white" : "text-muted-foreground hover:text-white"}`}
+                    >
+                        Withdraw
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setOption("Deposit")}
+                        className={`w-full py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all cursor-pointer ${option == "Deposit" ? "bg-white/10 text-white" : "text-muted-foreground hover:text-white"}`}
+                    >
+                        Deposit
+                    </button>
+                </div>
+
+                <div className="mx-2 mt-4 rounded-2xl bg-black/30 border border-white/5 p-5">
+                    <div className="flex justify-between items-center mb-3">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wider">{option == "Deposit" ? "You pay" : "You receive"}</span>
+                        <span className="text-xs text-muted-foreground font-mono">SOL</span>
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="0.00"
+                        value={amt}
+                        onChange={(e) => setAmt(e.target.value)}
+                        className="w-full bg-transparent outline-none text-5xl font-mono text-white placeholder:text-white/20"
+                    />
+                    <div className="mt-3 pt-3 border-t border-white/5 text-sm font-mono text-muted-foreground">
+                        ≈ {(Number(amt) * currPrice || 0).toFixed(2)} USDT
                     </div>
                 </div>
+
+                <div className="p-2 mt-4">
+                    <button
+                        className={`w-full rounded-2xl font-semibold text-lg py-4 transition-all duration-300 ease-out bg-profit text-black hover:bg-[#26a698] active:scale-[0.98] cursor-pointer ${!isLoggedIn ? "opacity-50 pointer-events-none" : ""}`}
+                        onClick={submit}
+                    >
+                        {option}
+                    </button>
+                    {!isLoggedIn && (
+                        <div className="text-center text-xs text-muted-foreground mt-3">Connect your wallet to continue</div>
+                    )}
+                </div>
+
+            </div>
         </div>
     )
 }

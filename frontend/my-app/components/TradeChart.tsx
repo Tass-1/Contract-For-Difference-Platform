@@ -1,7 +1,7 @@
 'use client';
 import { useStore } from '@/app/store/useStore';
 import axios from 'axios';
-import { createChart, CandlestickSeries, CandlestickData, ISeriesApi, Time } from 'lightweight-charts';
+import { createChart, CandlestickSeries, CandlestickData, ISeriesApi, IPriceLine, LineStyle, Time } from 'lightweight-charts';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { api } from '@/lib/api';
@@ -9,7 +9,10 @@ import { api } from '@/lib/api';
 export default function TradeCharts({symbol} : {symbol : string}) {
     const container = useRef(null);
     const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+    const priceLineRef = useRef<IPriceLine | null>(null);
+    const prevPriceRef = useRef<number | null>(null);
     const liveCandle = useStore(state => state.ChartData[symbol]);
+    const livePrice = useStore(state => state.livePrice[symbol]);
     const [isLoading, setIsLoading] = useState(true);
     const [showSlowMsg, setShowSlowMsg] = useState(false);
   
@@ -19,6 +22,8 @@ export default function TradeCharts({symbol} : {symbol : string}) {
             setIsLoading(true);
             setShowSlowMsg(false);
             const slowTimer = setTimeout(() => setShowSlowMsg(true), 4000);
+            priceLineRef.current = null;
+            prevPriceRef.current = null;
 
             const chartOptions = {
                 layout: {
@@ -96,6 +101,26 @@ export default function TradeCharts({symbol} : {symbol : string}) {
             seriesRef.current.update(liveCandle as CandlestickData<Time>) 
         }
       } , [liveCandle])
+
+      useEffect(() => {
+        if(!seriesRef.current || !livePrice) return;
+        const prev = prevPriceRef.current;
+        const color = prev !== null && livePrice < prev ? '#dc5e57' : '#52a298';
+        prevPriceRef.current = livePrice;
+
+        if(!priceLineRef.current){
+            priceLineRef.current = seriesRef.current.createPriceLine({
+                price: livePrice,
+                color: color,
+                lineWidth: 1,
+                lineStyle: LineStyle.Dashed,
+                axisLabelVisible: true,
+                title: '',
+            });
+        } else {
+            priceLineRef.current.applyOptions({ price: livePrice, color: color });
+        }
+      }, [livePrice])
     
 
   return (
