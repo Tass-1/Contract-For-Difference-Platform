@@ -19,20 +19,22 @@ export default function OrderForm() {
 
     return (
         <div className="w-full flex flex-col gap-4">
-            {/* 1. Order Type Selection (Market vs Limit) */}
-            <div className="flex gap-2 p-1 bg-black/40 rounded-md">
-                <button 
-                    onClick={() => setOrderType("Market")}
-                    className={`flex-1 py-1 text-xs rounded transition-all ${orderType === "Market" ? "bg-secondary text-white" : "text-muted-foreground hover:text-white"}`}
-                >
-                    Market
-                </button>
-                <button 
-                    onClick={() => setOrderType("Limit")}
-                    className={`flex-1 py-1 text-xs rounded transition-all ${orderType === "Limit" ? "bg-secondary text-white" : "text-muted-foreground hover:text-white"}`}
-                >
-                    Limit
-                </button>
+            <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{symbol}</span>
+                <div className="flex gap-1 p-0.5 bg-black/40 rounded-md">
+                    <button 
+                        onClick={() => setOrderType("Market")}
+                        className={`px-3 py-1 text-[11px] rounded transition-all ${orderType === "Market" ? "bg-secondary text-white" : "text-muted-foreground hover:text-white"}`}
+                    >
+                        Market
+                    </button>
+                    <button 
+                        onClick={() => setOrderType("Limit")}
+                        className={`px-3 py-1 text-[11px] rounded transition-all ${orderType === "Limit" ? "bg-secondary text-white" : "text-muted-foreground hover:text-white"}`}
+                    >
+                        Limit
+                    </button>
+                </div>
             </div>
 
             <Tabs defaultValue="LONG" className="w-full">
@@ -116,87 +118,79 @@ function OrderInputs( {side, orderType, symbol, leverage, setLeverage, balance}:
     return (
         <div className="space-y-4">
             
-            <div className="space-y-2">
-                <div className="flex justify-between">
-                    <Label className="text-muted-foreground text-xs">Margin (SOL)</Label>
-                    {/* {isMarket && <span className="text-[10px] text-profit uppercase font-bold">Best Market Price</span>} */}
+            <div className="space-y-1.5">
+                <Label className="text-muted-foreground text-xs">Margin</Label>
+                <div className="relative">
+                    <Input 
+                        type="number" 
+                        className="pr-14"
+                        onChange={(e) => setPrice(Number(e.target.value))}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground">SOL</span>
                 </div>
-                <Input 
-                    type="number" 
-                    // disabled={isMarket}
-                    // value={isMarket ? "" : price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                />
-                </div>
+            </div>
 
-            
-
-        
-            <div className="space-y-4 py-2">
-                <div className="flex justify-between items-center">
+            <div className="space-y-3 py-1">
+                <div className="flex justify-between items-baseline">
                     <Label className="text-muted-foreground text-xs">Leverage</Label>
-                    <span className="text-xs font-mono text-white bg-secondary px-2 py-0.5 rounded border border-white/5">{leverage}x</span>
+                    <span className={`text-sm font-mono font-bold px-2 py-0.5 rounded ${leverage[0] >= 7 ? "text-loss" : leverage[0] >= 4 ? "text-yellow-300" : "text-profit"}`}>{leverage}x</span>
                 </div>
                 <Slider value={leverage} onValueChange={setLeverage} max={10} step={1} />
             </div>
 
-            
-                <div>   
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="space-y-1">
-                            <Label className="text-[10px] text-muted-foreground">Take Profit</Label>
-                            <Input placeholder="TP" className="h-8 bg-black/20 text-xs" onChange={(e) => setTakeprofit(Number(e.target.value))}/>
-                        </div>
-                        <div className="space-y-1">
-                            <Label className="text-[10px] text-muted-foreground">Stop Loss</Label>
-                            <Input placeholder="SL" className="h-8 bg-black/20 text-xs"  onChange={(e) => setstopLoss(Number(e.target.value))} />
-                        </div>
+            <div>   
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1 border-l-2 border-profit/40 pl-2">
+                        <Label className="text-[10px] text-muted-foreground uppercase tracking-wide">Take Profit</Label>
+                        <Input placeholder="0.00" className="h-8 bg-black/20 text-xs" onChange={(e) => setTakeprofit(Number(e.target.value))}/>
                     </div>
-                    <div className="flex justify-between mt-7 mb-2">
-                        <Label className="text-muted-foreground text-xs">Limit Price (USDT)</Label>
+                    <div className="space-y-1 border-l-2 border-loss/40 pl-2">
+                        <Label className="text-[10px] text-muted-foreground uppercase tracking-wide">Stop Loss</Label>
+                        <Input placeholder="0.00" className="h-8 bg-black/20 text-xs"  onChange={(e) => setstopLoss(Number(e.target.value))} />
                     </div>
+                </div>
+
+                <div className="mt-5 space-y-1.5">
+                    <Label className="text-muted-foreground text-xs">Limit Price (USDT)</Label>
                     <Input 
                         type="number" 
                         onChange={(e) => setLimit(Number(e.target.value))}
                         disabled={ orderType == "Limit" ? false : true}
                     />
-                    {orderType === "Limit" && (
-                        <div className="space-y-2 mt-4">
-                            <Label className="text-muted-foreground text-xs">Expiry Date/Time</Label>
-                            <Input 
-                                type="datetime-local" 
-                                className="text-muted" 
-                                onChange={(e) => setExpiry(e.target.value)}
-                            />
-                        </div>
-                    )}
                 </div>
-                
 
-            
+                {orderType === "Limit" && (
+                    <div className="space-y-1.5 mt-4">
+                        <Label className="text-muted-foreground text-xs">Expiry Date/Time</Label>
+                        <Input 
+                            type="datetime-local" 
+                            className="text-muted" 
+                            onChange={(e) => setExpiry(e.target.value)}
+                        />
+                    </div>
+                )}
+            </div>
 
-        
-            <div className="bg-black/10 p-3 rounded-md space-y-1 text-[14px] border border-white/5 font-sans">
-                <div className="flex justify-between">
+            <div className="bg-black/20 p-3 rounded-md text-[13px] border border-dashed border-white/10 font-mono">
+                <div className="flex justify-between py-1">
                     <span className="text-muted-foreground">Balance</span>
-                    <span className="text-white">{Number(balance*solPrice).toFixed(2)} USDT</span>
+                    <span className="text-white">{Number(balance*solPrice).toFixed(2)} <span className="text-muted-foreground">USDT</span></span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between py-1 border-t border-white/5 mt-1 pt-2">
                     <span className="text-muted-foreground">Pos. Size</span>
-                    <span className="text-white">{(Number((price * leverage[0]).toFixed(2))*currentPrice).toFixed(4) } USDT</span>
+                    <span className="text-white">{(Number((price * leverage[0]).toFixed(2))*currentPrice).toFixed(4) } <span className="text-muted-foreground">USDT</span></span>
                 </div>
             </div>
 
-            <Button className={`w-full h-15 font-bold py-6 text-lg uppercase tracking-wider bg-profit hover:bg-profit/90 text-black cursor-pointer`} disabled={isLong ? false : true || price < 0.1}
-            onClick={() => order(price, leverage[0], symbol, side, stopLoss, takeProfit, orderType, limit, expiry )} >
-                Open Long
-            </Button>
-            <Button className={`w-full h-15 font-bold py-6 text-lg uppercase tracking-wider cursor-pointer bg-loss hover:bg-loss/90 text-black 
-            `} disabled={!isLong ? false : true || price < 0.1} onClick={() => order(price, leverage[0], symbol, side, stopLoss, takeProfit, orderType, limit, expiry )} >
-                Open Short
-            </Button>
+            <div className="grid grid-cols-1 gap-2">
+                <Button className={`w-full h-12 font-bold uppercase tracking-wider bg-profit hover:bg-profit/90 text-black cursor-pointer`} disabled={isLong ? false : true || price < 0.1}
+                onClick={() => order(price, leverage[0], symbol, side, stopLoss, takeProfit, orderType, limit, expiry )} >
+                    Open Long
+                </Button>
+                <Button className={`w-full h-12 font-bold uppercase tracking-wider cursor-pointer bg-loss hover:bg-loss/90 text-black`} disabled={!isLong ? false : true || price < 0.1} onClick={() => order(price, leverage[0], symbol, side, stopLoss, takeProfit, orderType, limit, expiry )} >
+                    Open Short
+                </Button>
+            </div>
         </div>
     );
 }
-
-

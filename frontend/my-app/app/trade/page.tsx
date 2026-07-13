@@ -13,52 +13,30 @@ import { api } from '@/lib/api';
 export default function Trade() {
     const Nsymbol = useStore(state => state.symbol)
   return (
-    <div className="flex flex-col items-center bg-background font-sans">
-          
-          <div className="flex w-full">
-            <div className="w-full rounded-md mx-auto p-1 pl-1 l-0"  >
+    <div className="flex flex-col items-center bg-background font-sans min-h-screen">
 
-            {/* <div className="w-full h-18 rounded-md flex items-center p-4 bg-red-200"> STRIP </div> */}
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-1 w-full p-1">
 
-            <Strip/>
+            <div className="rounded-md mx-auto w-full overflow-hidden">
 
-            <div className="w-full h-full rounded-md">
+              <Strip/>
 
-                <TradeCharts symbol={Nsymbol}/>
+              <div className="w-full h-full rounded-md">
+                  <TradeCharts symbol={Nsymbol}/>
+              </div>
 
             </div>
 
-        </div> 
-            <div className="w-full m-1 bg-og p-5 rounded-md h-169">
+            <div className="w-full bg-og p-5 rounded-md h-fit xl:sticky xl:top-[68px]">
               <OrderForm/>
             </div>
-            
+
           </div>
-          <div>
-            {/* <TickerTape/> */}
-          </div>
+
           <div className="w-full">
             <Positions/>
           </div>
-          {/* <div>
-            <LivePnl />
-          </div> */}
-          
-          {/* <WalletAdapter>
-            <Order/>
-            <GetPrice/>
-            <WithdrawMoney/>
-            <DepositFunc/>
-            <AuthButton></AuthButton>
-            <WalletMultiButton></WalletMultiButton>
-          </WalletAdapter>
-          <TradeCharts/>
-          <LivePnl/>
-          <GetPositions/>
-          <GetTrades/>
-          <Button size='lg' variant='destructive'> Shadcn Button</Button>
-           */}
-          
+
         </div>
   );
 }
