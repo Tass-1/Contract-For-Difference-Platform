@@ -47,55 +47,57 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <div className="h-screen w-screen bg-og">   
-         
-          <div className="flex gap-20">
-            <div className="w-150 bg-og ml-35 mt-20">
-            <div className="bg-og text-8xl font-sans text-semibold text-yellow-300 tracking-widest"> TRADE <div className="bg-og text-8xl font-sans text-semibold text-profit font-semibold tracking-widest">CRYPTO </div> <div className="bg-og text-8xl font-sans  text-white tracking-widest">WITH</div>  <div className="bg-og text-8xl font-semibold font-sans text-semibold text-loss tracking-widest">LEVERAGE</div>  </div>
-            <div className="bg-og text-3xl mt-4 tracking-wider"> Real-time CFD trading on BTC, ETH, SOL </div>
-            </div>
-            <div className="w-150 h-80 bg-muted mt-20 rounded-4xl p-10 "> 
-              
-              
-            <div className="flex justify-between border-b border-white/10 pb-4"> 
-              <div className="text-muted-foreground text-sm uppercase tracking-wider">Currencies</div> 
-              <div className="text-muted-foreground text-sm uppercase tracking-wider">Markets</div>
-            </div>
-            
-            <div className="mt-6 flex justify-between w-full font-medium items-center">
-              <div className="font-medium tracking-wider text-white text-lg">BTC</div>
-              <div className="font-mono text-white flex">$ <GetPrice s={"BTCUSDT"}/></div>
-              <div className={btc >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
-                {btc >= 0 ? "+ " : ""}{btc}%
+      <div className="min-h-screen w-screen bg-og overflow-hidden">
+
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center lg:items-start px-6 sm:px-10 lg:px-0">
+            <div className="w-full lg:w-150 lg:ml-35 mt-16 lg:mt-20 text-center lg:text-left">
+              <div className="bg-og font-sans font-semibold text-yellow-300 tracking-widest leading-[0.95] text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
+                TRADE
+                <div className="bg-og font-sans font-semibold text-profit tracking-widest">CRYPTO</div>
+                <div className="bg-og font-sans font-semibold text-white tracking-widest">WITH</div>
+                <div className="bg-og font-sans font-semibold text-loss tracking-widest">LEVERAGE</div>
+              </div>
+              <div className="bg-og text-xl sm:text-2xl lg:text-3xl mt-6 tracking-wider text-white/70">
+                Real-time CFD trading on BTC, ETH, SOL
               </div>
             </div>
-            
-            <div className="mt-6 flex justify-between font-medium w-full items-center">
-              <div className="font-medium tracking-wider text-white text-lg">SOL</div>
-              <div className="font-mono text-white flex">$ <GetPrice s={"SOLUSDT"}/></div>
-              <div className={sol >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
-                {sol >= 0 ? "+ " : ""}{sol}%
+
+            <div className="w-full max-w-md lg:w-150 lg:max-w-none h-auto lg:h-80 bg-muted mt-4 lg:mt-20 rounded-4xl p-8 sm:p-10 border border-white/10 shadow-2xl shadow-black/40">
+
+              <div className="flex justify-between border-b border-white/10 pb-4">
+                <div className="text-muted-foreground text-sm uppercase tracking-wider">Currencies</div>
+                <div className="text-muted-foreground text-sm uppercase tracking-wider">Markets</div>
               </div>
+
+              <div className="mt-6 flex justify-between w-full font-medium items-center rounded-xl px-2 -mx-2 transition-colors hover:bg-white/5">
+                <div className="font-medium tracking-wider text-white text-lg">BTC</div>
+                <div className="font-mono text-white flex">$ <GetPrice s={"BTCUSDT"}/></div>
+                <div className={btc >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
+                  {btc >= 0 ? "+ " : ""}{btc}%
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-between font-medium w-full items-center rounded-xl px-2 -mx-2 transition-colors hover:bg-white/5">
+                <div className="font-medium tracking-wider text-white text-lg">SOL</div>
+                <div className="font-mono text-white flex">$ <GetPrice s={"SOLUSDT"}/></div>
+                <div className={sol >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
+                  {sol >= 0 ? "+ " : ""}{sol}%
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-between font-medium w-full items-center rounded-xl px-2 -mx-2 transition-colors hover:bg-white/5">
+                <div className="font-medium tracking-wider text-white text-lg">ETH</div>
+                <div className="font-mono text-white flex">$ <GetPrice s={"ETHUSDT"}/></div>
+                <div className={eth >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
+                  {eth >= 0 ? "+ " : ""}{eth}%
+                </div>
+              </div>
+
             </div>
-            
-            <div className="mt-6 flex justify-between font-medium w-full items-center">
-              <div className="font-medium tracking-wider text-white text-lg">ETH</div>
-              <div className="font-mono text-white flex">$ <GetPrice s={"ETHUSDT"}/></div>
-              <div className={eth >= 0 ? "text-profit font-mono font-medium" : "text-loss font-mono font-medium"}>
-                {eth >= 0 ? "+ " : ""}{eth}%
-              </div>
-            
+
           </div>
-          
-        </div>
-        
       </div>
-        {/* <div className="ml-215 text-3xl  text-black font-semibold bg-yellow-300 rounded-lg h-40 flex justify-between items-center p-10 w-130">START YOUR TRADING JOURNEY TODAY</div>     */}
     </div>
-      
-      
-      {/* <div className="bg-[url('./en.png')] w-screen h-screen bg-cover bg-no-repeat blur-xs"></div> */}
-  </div>
-    
+
   );
 }
