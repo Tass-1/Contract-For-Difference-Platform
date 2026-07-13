@@ -92,13 +92,13 @@ export default function NavBar(){
 
 
     return (
-        <div className="text-xl flex justify-between w-full items-center h-15 p-3 bg-og sticky top-0 z-50">
-            <div className="text-xl p-2 text-[#c5a03b] font-bold ">mantisHigh</div>
-            <NavigationMenu  >
-        <NavigationMenuList className="gap-10">
+        <div className="text-xl flex justify-between w-full items-center h-16 px-4 sm:px-6 bg-og/90 backdrop-blur-md sticky top-0 z-50 border-b border-white/10">
+            <div className="text-xl p-2 text-[#c5a03b] font-bold tracking-wide">mantisHigh</div>
+            <NavigationMenu className="hidden md:flex" >
+        <NavigationMenuList className="gap-8">
             <NavigationMenuItem >
             <NavigationMenuLink asChild>
-                <Link href="/" className={`${navigationMenuTriggerStyle()} `}>
+                <Link href="/" className={`${navigationMenuTriggerStyle()} text-white/80 hover:text-white transition-colors`}>
                 Home
                 </Link>
             </NavigationMenuLink>
@@ -106,39 +106,39 @@ export default function NavBar(){
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/trade" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/80 hover:text-white transition-colors`}>
                 Trades
             </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/Markets" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/80 hover:text-white transition-colors`}>
                 Markets
             </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/history" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/80 hover:text-white transition-colors`}>
                 History
             </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/txn" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/80 hover:text-white transition-colors`}>
                 Deposit / Withdraw
             </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="mr-3 flex justify-between items-center gap-2">
+      <div className="mr-1 flex justify-end items-center gap-3">
             
                 <WalletMultiButton></WalletMultiButton>
             
-            <div>{isLoggedIn ?  Number(balance).toFixed(2) : null}</div>
+            <div className="font-mono text-white/90 text-base bg-muted px-3 py-1.5 rounded-lg border border-white/10 min-w-[4rem] text-right">{isLoggedIn ?  Number(balance).toFixed(2) : null}</div>
       </div>
         </div>
     )
