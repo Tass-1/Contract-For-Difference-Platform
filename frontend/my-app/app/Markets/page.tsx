@@ -102,9 +102,9 @@ export default function Markets() {
                     </div>
                 </div>
 
-                <div className="bg-[#161a1e] border border-[#2b3139] rounded-[8px] overflow-hidden shadow-xl">
+                <div className="bg-[#191a1d] border border-[#2b3139] rounded-[8px] overflow-hidden shadow-xl">
                     <Table className="w-full">
-                        <TableHeader className="bg-[#0b0e11]/40 border-b border-[#2b3139]">
+                        <TableHeader className="bg-[#191a1d]/40 border-b border-[#2b3139]">
                             <TableRow className="border-none hover:bg-transparent">
                                 <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] px-6">Asset</TableHead>
                                 <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right">Price</TableHead>

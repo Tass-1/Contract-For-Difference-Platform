@@ -23,12 +23,12 @@ export default function Trade() {
                         <Strip />
                     </div>
                     
-                    {/* STRICT OVERFLOW HIDDEN to stop canvas bleed */}
+                  
                     <div className="flex-1 min-h-0 bg-[#0b0e11] relative z-0 overflow-hidden">
                         <TradeCharts symbol={Nsymbol} />
                     </div>
                     
-                    {/* STRICT OVERFLOW HIDDEN - Scrolling is now handled INSIDE the Positions component */}
+                   
                     <div className="h-[35%] min-h-[220px] shrink-0 border-t border-[#1e2329] bg-[#0b0e11] relative z-10 overflow-hidden shadow-[0_-10px_15px_-3px_rgba(11,14,17,1)]">
                         <Positions />
                     </div>

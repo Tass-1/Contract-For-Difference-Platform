@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useStore } from '@/app/store/useStore';
 import { createChart, CandlestickSeries, CandlestickData, ISeriesApi, Time, LineSeries } from 'lightweight-charts';
 import { useEffect, useRef, useState } from 'react';
@@ -194,13 +194,13 @@ export default function TradeCharts({ symbol }: { symbol: string }) {
                 } as CandlestickData<Time>);
 
             } catch (err) {
-                console.error("Failed to parse candle update metric:", err);
+                console.error(err);
             }
         }
     }, [liveCandle]);
 
     return (
-        <div className='relative w-full h-full bg-[#0b0e11] overflow-hidden min-h-0'>
+        <div className='relative w-full h-full min-h-[350px] md:min-h-0 bg-[#0b0e11] overflow-hidden'>
             <div ref={container} className='absolute inset-0' />
 
             {isLoading && (

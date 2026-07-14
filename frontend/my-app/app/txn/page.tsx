@@ -32,7 +32,7 @@ function WalletOverview() {
     const wallet = useWallet();
 
     return (
-        <div className="flex flex-col h-full bg-[#161a1e] border border-[#2b3139]/80 rounded-[12px] p-6 shadow-xl">
+        <div className="flex flex-col h-full bg-[#131418] border border-[#2b3139]/80 rounded-[12px] p-6 shadow-xl">
             <h2 className="text-[16px] font-medium text-[#eaecef] mb-6 flex items-center gap-2">
                 <span className="w-1 h-4 bg-[#f0b90b] rounded-full"></span>
                 Asset Overview
@@ -51,8 +51,8 @@ function WalletOverview() {
                     <div className="text-[12px] text-[#848e9c] mb-2 font-medium">Network Status</div>
                     <div className="flex items-center gap-3">
                         <div className="relative flex items-center justify-center">
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#2ebd85]"></div>
-                            <div className="absolute w-2.5 h-2.5 rounded-full bg-[#2ebd85] animate-ping opacity-75"></div>
+                            
+                            
                         </div>
                         <span className="text-[14px] font-medium text-[#eaecef]">Solana Devnet</span>
                     </div>
@@ -176,7 +176,7 @@ function TxnContent() {
     }
 
     return (
-        <div className="flex flex-col h-full bg-[#161a1e] border border-[#2b3139]/80 rounded-[12px] p-7 shadow-xl">
+        <div className="flex flex-col h-full bg-[#131418] border border-[#2b3139]/80 rounded-[12px] p-7 shadow-xl">
             
             <div className="flex bg-[#0b0e11] rounded-[8px] p-1.5 mb-8 border border-[#2b3139]/60 shadow-inner">
                 <button
