@@ -1,42 +1,48 @@
 "use client";
 import Strip from "@/components/Strip";
 import TradeCharts from "@/components/TradeChart";
-import NavBar from "@/components/Navigation"; 
-import SocketListener from "@/components/SocketComp"; 
-import OrderForm from "@/components/OrderForm"; 
-import Positions from "@/components/GetPositions"; 
-import WalletAdapter from "@/components/walletAdapter"; 
+import SocketListener from "@/components/SocketComp";
+import OrderForm from "@/components/OrderForm";
+import Positions from "@/components/GetPositions";
 import { useStore } from "../store/useStore";
 import TickerTape from "@/components/Ticker";
-import { api } from '@/lib/api';
 
 export default function Trade() {
-    const Nsymbol = useStore(state => state.symbol)
-  return (
-    <div className="flex flex-col items-center bg-background font-sans min-h-screen">
+    const Nsymbol = useStore(state => state.symbol);
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-1 w-full p-1">
+    return (
+        <div className="w-full h-[calc(100vh-64px)] flex flex-col bg-[#0b0e11] text-[#eaecef] overflow-hidden font-sans">
+            
+            <SocketListener />
+            
+            <div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
+                
+                <div className="flex-1 flex flex-col min-w-0 border-r border-[#1e2329]">
+                    
+                    <div className="shrink-0 border-b border-[#1e2329]">
+                        <Strip />
+                    </div>
+                    
+                    {/* STRICT OVERFLOW HIDDEN to stop canvas bleed */}
+                    <div className="flex-1 min-h-0 bg-[#0b0e11] relative z-0 overflow-hidden">
+                        <TradeCharts symbol={Nsymbol} />
+                    </div>
+                    
+                    {/* STRICT OVERFLOW HIDDEN - Scrolling is now handled INSIDE the Positions component */}
+                    <div className="h-[35%] min-h-[220px] shrink-0 border-t border-[#1e2329] bg-[#0b0e11] relative z-10 overflow-hidden shadow-[0_-10px_15px_-3px_rgba(11,14,17,1)]">
+                        <Positions />
+                    </div>
+                    
+                </div>
 
-            <div className="rounded-md mx-auto w-full overflow-hidden">
-
-              <Strip/>
-
-              <div className="w-full h-full rounded-md">
-                  <TradeCharts symbol={Nsymbol}/>
-              </div>
-
+                <div className="w-full lg:w-[320px] xl:w-[360px] shrink-0 flex flex-col h-full bg-[#131418] overflow-y-auto">
+                    <OrderForm />
+                </div>
+                
             </div>
 
-            <div className="w-full bg-og p-5 rounded-md h-fit xl:sticky xl:top-[68px]">
-              <OrderForm/>
-            </div>
-
-          </div>
-
-          <div className="w-full">
-            <Positions/>
-          </div>
-
+            <TickerTape />
+            
         </div>
-  );
+    );
 }

@@ -1,119 +1,177 @@
-"use client";
+'use client';
+
 import GetPrice from "@/components/GetPrice";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStore } from "../store/useStore";
 import { useRouter } from "next/navigation";
-import { api } from '@/lib/api';
 
-export default function Markets (){
-    interface BinanceData{
-        highPrice: string;
-        lowPrice: string;
-        vol: string;
-        qouteVol: string;
-        priceChange: string;
+interface BinanceData {
+    highPrice: string;
+    lowPrice: string;
+    vol: string;
+    qouteVol: string;
+    priceChange: string;
+}
 
-    }
-    const [btc , setBtc] = useState<BinanceData | null>(null);
-    const [eth , setEth] = useState<BinanceData | null>(null);
-    const [sol , setSol] = useState<BinanceData | null>(null);
-    const symbol = useStore(state => state.symbol)
-    const setSymbol = useStore(state => state.setSymbol)
+interface MarketTicker {
+    symbol: string;
+    displayName: string;
+    baseAsset: string;
+}
+
+export default function Markets() {
+    const [marketData, setMarketData] = useState<Record<string, BinanceData>>({});
+    const [searchQuery, setSearchQuery] = useState("");
+    const setSymbol = useStore(state => state.setSymbol);
     const router = useRouter();
-    function Clickiee( s: string){
-        setSymbol(s);
-        router.push("/trade")
-    }
-    useEffect(() => {
-    async function getChange(){
-      await Promise.all(["BTCUSDT" , "ETHUSDT", "SOLUSDT"].map(async sym => {
-          const response = await axios.get(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}`);
-          if(sym == "BTCUSDT"){ setBtc({
-            highPrice: response.data.highPrice,
-            lowPrice: response.data.lowPrice,
-            vol: response.data.volume,
-            qouteVol: response.data.quoteVolume,
-            priceChange: response.data.priceChangePercent
-          })}
-          if(sym == "SOLUSDT"){ setSol({
-            highPrice: response.data.highPrice,
-            lowPrice: response.data.lowPrice,
-            vol: response.data.volume,
-            qouteVol: response.data.quoteVolume,
-            priceChange: response.data.priceChangePercent
-          })}
-          if(sym == "ETHUSDT"){ setEth({
-            highPrice: response.data.highPrice,
-            lowPrice: response.data.lowPrice,
-            vol: response.data.volume,
-            qouteVol: response.data.quoteVolume,
-            priceChange: response.data.priceChangePercent
-          })}
-        })
-      )
-    } 
-    getChange();
 
-    const interval = setInterval(getChange , 6000);
-    return () => {
-      clearInterval(interval)
+    const targetMarkets: MarketTicker[] = [
+        { symbol: "BTCUSDT", displayName: "BTC / USDT", baseAsset: "Bitcoin" },
+        { symbol: "ETHUSDT", displayName: "ETH / USDT", baseAsset: "Ethereum" },
+        { symbol: "SOLUSDT", displayName: "SOL / USDT", baseAsset: "Solana" }
+    ];
+
+    function handleRowClick(s: string) {
+        setSymbol(s);
+        router.push("/trade");
     }
-  }  , [])
+
+    useEffect(() => {
+        async function getChange() {
+            try {
+                const updatedData: Record<string, BinanceData> = {};
+                await Promise.all(
+                    targetMarkets.map(async (market) => {
+                        const response = await axios.get(
+                            `https://api.binance.com/api/v3/ticker/24hr?symbol=${market.symbol}`
+                        );
+                        updatedData[market.symbol] = {
+                            highPrice: response.data.highPrice,
+                            lowPrice: response.data.lowPrice,
+                            vol: response.data.volume,
+                            qouteVol: response.data.quoteVolume,
+                            priceChange: response.data.priceChangePercent,
+                        };
+                    })
+                );
+                setMarketData((prev) => ({ ...prev, ...updatedData }));
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        getChange();
+        const interval = setInterval(getChange, 6000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const filteredMarkets = targetMarkets.filter(
+        (m) =>
+            m.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.baseAsset.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const formatNumber = (val: string | undefined, decimals = 2) => {
+        if (!val) return "0.00";
+        return Number(val).toLocaleString(undefined, {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+    };
 
     return (
-        <div className="min-h-screen bg-og p-10">
-            <div className="max-w-7xl mx-auto mt-10">
-                <div className="mb-8 pl-2">
-                    <h1 className="text-4xl font-sans font-bold text-white tracking-wide">Market Overview</h1>
-                    <p className="text-muted-foreground mt-2 tracking-wider">Real-time 24h metrics and volume for supported CFDs.</p>
+        <div className="min-h-screen bg-[#0b0e11] text-[#eaecef] p-6 md:p-10 selection:bg-[#f0b90b]/30">
+            <div className="max-w-7xl mx-auto mt-6">
+                
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                    <div>
+                        <h1 className="text-[28px] font-semibold tracking-tight text-[#eaecef]">Markets</h1>
+                        <p className="text-[13px] text-[#848e9c] mt-1">Real-time assets, 24h volume metrics and trading stats.</p>
+                    </div>
+
+                    <div className="relative w-full md:w-[280px]">
+                        <input
+                            type="text"
+                            placeholder="Search asset..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full h-9 bg-[#161a1e] border border-[#2b3139] rounded-[4px] px-3 text-[13px] text-[#eaecef] outline-none placeholder:text-[#3b444f] focus:border-[#5c6370] transition-colors"
+                        />
+                    </div>
                 </div>
-                <div className="bg-og border border-white/5 p-4 rounded-3xl shadow-2xl">
+
+                <div className="bg-[#161a1e] border border-[#2b3139] rounded-[8px] overflow-hidden shadow-xl">
                     <Table className="w-full">
-                        <TableHeader>
-                            <TableRow className="">
-                                <TableHead> Currencies </TableHead>
-                                <TableHead> Value </TableHead>
-                                <TableHead> 24High </TableHead>
-                                <TableHead> 24Low </TableHead>
-                                <TableHead> Volume </TableHead>
-                                <TableHead> Quote Volume </TableHead>
-                                <TableHead> Percentage Change </TableHead>
+                        <TableHeader className="bg-[#0b0e11]/40 border-b border-[#2b3139]">
+                            <TableRow className="border-none hover:bg-transparent">
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] px-6">Asset</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right">Price</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right hidden sm:table-cell">24h High</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right hidden sm:table-cell">24h Low</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right hidden md:table-cell">24h Volume</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right hidden lg:table-cell">Quote Volume</TableHead>
+                                <TableHead className="h-10 text-[12px] font-medium text-[#848e9c] text-right pr-6">24h Change</TableHead>
                             </TableRow>
                         </TableHeader>
+                        
                         <TableBody>
-                            <TableRow className="cursor-pointer" onClick={() => Clickiee("BTCUSDT")} >
-                                <TableCell className="font-bold tracking-wider text-base"> BTC/USDT </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> <GetPrice s={"BTCUSDT"}/> </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(btc?.highPrice).toFixed(3)} </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(btc?.lowPrice).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(btc?.vol).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(btc?.qouteVol).toFixed(3)} USDT</TableCell>
-                                <TableCell className={`text-base text-muted-foreground font-sans tracking-wider ${Number(btc?.priceChange) >= 0 ? "text-profit" : "text-loss"}`}> {Number(btc?.priceChange).toFixed(3)}</TableCell>
-                            </TableRow>
-                            <TableRow className="cursor-pointer" onClick={() => Clickiee("ETHUSDT")}>
-                                <TableCell className="font-bold tracking-wider text-base"> ETH/USDT </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> <GetPrice s={"ETHUSDT"}/> </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(eth?.highPrice).toFixed(3)} </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(eth?.lowPrice).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(eth?.vol).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(eth?.qouteVol).toFixed(3)} USDT</TableCell>
-                                <TableCell className={`text-base text-muted-foreground font-sans tracking-wider ${Number(eth?.priceChange) >= 0 ? "text-profit" : "text-loss"}`}> {Number(eth?.priceChange).toFixed(3)}</TableCell>
-                            </TableRow>
-                            <TableRow className="cursor-pointer" onClick={() => Clickiee("SOLUSDT")}>
-                                <TableCell className="font-bold tracking-wider text-base"> SOL/USDT </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> <GetPrice s={"SOLUSDT"}/> </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(sol?.highPrice).toFixed(3)} </TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(sol?.lowPrice).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(sol?.vol).toFixed(3)}</TableCell>
-                                <TableCell className="text-base text-muted-foreground font-sans tracking-wider"> {Number(sol?.qouteVol).toFixed(3)} USDT</TableCell>
-                                <TableCell className={`text-base text-muted-foreground font-sans tracking-wider ${Number(sol?.priceChange) >= 0 ? "text-profit" : "text-loss"}`}> {Number(sol?.priceChange).toFixed(3)}</TableCell>
-                            </TableRow>
+                            {filteredMarkets.map((market) => {
+                                const ticker = marketData[market.symbol];
+                                const isPositive = Number(ticker?.priceChange) >= 0;
+
+                                return (
+                                    <TableRow
+                                        key={market.symbol}
+                                        onClick={() => handleRowClick(market.symbol)}
+                                        className="border-b border-[#2b3139]/50 cursor-pointer hover:bg-[#1e2329]/40 transition-colors duration-150"
+                                    >
+                                        <TableCell className="px-6 py-4">
+                                            <div className="flex flex-col">
+                                                <span className="text-[14px] font-semibold text-[#eaecef]">
+                                                    {market.displayName}
+                                                </span>
+                                                <span className="text-[12px] text-[#848e9c]">
+                                                    {market.baseAsset}
+                                                </span>
+                                            </div>
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 font-medium text-[14px] tabular-nums">
+                                            <GetPrice s={market.symbol} />
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 text-[#eaecef]/80 text-[13px] tabular-nums hidden sm:table-cell">
+                                            {formatNumber(ticker?.highPrice, 2)}
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 text-[#eaecef]/80 text-[13px] tabular-nums hidden sm:table-cell">
+                                            {formatNumber(ticker?.lowPrice, 2)}
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 text-[#eaecef]/70 text-[13px] tabular-nums hidden md:table-cell">
+                                            {formatNumber(ticker?.vol, 0)}
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 text-[#848e9c] text-[13px] tabular-nums hidden lg:table-cell">
+                                            {formatNumber(ticker?.qouteVol, 2)} <span className="text-[11px]">USDT</span>
+                                        </TableCell>
+
+                                        <TableCell className="text-right py-4 pr-6 font-medium text-[13px] tabular-nums">
+                                            <span className={isPositive ? "text-[#2ebd85]" : "text-[#e0294a]"}>
+                                                {isPositive ? "+" : ""}
+                                                {formatNumber(ticker?.priceChange, 2)}%
+                                            </span>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
                         </TableBody>
                     </Table>
                 </div>
+                
             </div>
         </div>
-    )
+    );
 }

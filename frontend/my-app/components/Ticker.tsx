@@ -7,7 +7,7 @@ interface TickerData {
     change: number;
 }
 
-// 1. Create a dummy starting state
+
 const initialTickers: Record<string, TickerData> = {
     "BTCUSDT": { symbol: "BTCUSDT", price: "...", change: 0 },
     "ETHUSDT": { symbol: "ETHUSDT", price: "...", change: 0 },
@@ -17,7 +17,7 @@ const initialTickers: Record<string, TickerData> = {
 };
 
 export default function TickerTape() {
-    // 2. Pass the initial state into useState
+    
     const [tickers, setTickers] = useState<Record<string, TickerData>>(initialTickers);
 
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function TickerTape() {
 
     const tickerList = Object.values(tickers);
 
-    // 3. REMOVE the "if (tickerList.length === 0)" return statement entirely!
+    
 
     return (
         <div className="w-full bg-black/40 border-y border-white/10 overflow-hidden flex items-center h-10">
@@ -53,7 +53,7 @@ export default function TickerTape() {
                             <span className="text-white font-bold">{coin.symbol.replace("USDT", "")}</span>
                             <span className="text-muted-foreground">${coin.price}</span>
                             
-                            {/* Minor tweak: don't show +0.00% when it's still loading the "..." price */}
+                           
                             <span className={isPositive ? "text-profit" : "text-loss"}>
                                 {coin.price === "..." ? "" : (isPositive ? "+" : "") + coin.change.toFixed(2) + "%"}
                             </span>

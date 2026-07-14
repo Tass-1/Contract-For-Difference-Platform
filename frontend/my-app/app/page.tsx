@@ -62,7 +62,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-full max-w-md lg:w-150 lg:max-w-none h-auto lg:h-80 bg-muted mt-4 lg:mt-20 rounded-4xl p-8 sm:p-10 border border-white/10 shadow-2xl shadow-black/40">
+            <div className="w-full max-w-md lg:w-150 lg:max-w-none h-auto lg:h-80 bg-[#131418] mt-4 lg:mt-20 rounded-4xl p-8 sm:p-10 border border-white/10 shadow-2xl shadow-black/40">
 
               <div className="flex justify-between border-b border-white/10 pb-4">
                 <div className="text-muted-foreground text-sm uppercase tracking-wider">Currencies</div>

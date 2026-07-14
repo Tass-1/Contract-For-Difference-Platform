@@ -93,22 +93,21 @@ html,body {
 }
 
 .wallet-adapter-button {
-  background-color:  #f0b90b !important; 
+  background-color: #1e2329 !important; 
   border: 1px solid #2b3139 !important;
-  color: #1e2329 !important; 
+  color: #eaecef !important; 
   font-family: var(--font-sans) !important;
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  height: 40px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  height: 36px !important;
   border-radius: 4px !important; 
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.15s ease-in-out !important;
 }
 
-/* Hover State */
 .wallet-adapter-button:not([disabled]):hover {
-  background-color: #fcd535 !important;
-  box-shadow: 0 4px 12px rgba(240, 185, 11, 0.2);
-  transform: translateY(-1px);
+  background-color: #2b3139 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 .wallet-adapter-dropdown-list {
