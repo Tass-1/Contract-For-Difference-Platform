@@ -17,7 +17,12 @@ router.post("/api/history" , async (req,res) => {
             const resp = await fetch(url);
             const data = await resp.json();
             // console.log(data)
-
+            if (!Array.isArray(data)) {
+                    console.error("Binance API Error:", data);
+                    return res.status(resp.status).json({ 
+                        error: data.msg || "Failed to fetch data from Binance" 
+            });
+        }
             const formatData: CandleData[] = data.map((rawCandle: any[]) => {
                 return{
                     time: rawCandle[0]/1000,
