@@ -12,6 +12,14 @@ interface ChartItem {
     close: number;
 }
 
+interface CandleData{
+    time: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+}
+
 export default function TradeCharts({ symbol }: { symbol: string }) {
     const container = useRef<HTMLDivElement>(null);
     const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -148,18 +156,23 @@ export default function TradeCharts({ symbol }: { symbol: string }) {
                 }
                 return maData;
             };
-
+            const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=500`;
             const rawData = async () => {
                 try {
-                    const response = await api.post("/api/history", { symbol: symbol }, {
-                        headers: {
-                            authorization: localStorage.getItem("authorization")
-                        }
+                    const resp = await fetch(url);
+                    const response = await resp.json();
+                    const formatData: CandleData[] = response.map((rawCandle: any[]) => {
+                        return{
+                            time: rawCandle[0]/1000,
+                            open: parseFloat(rawCandle[1]),
+                            high: parseFloat(rawCandle[2]),
+                            low: parseFloat(rawCandle[3]),
+                            close: parseFloat(rawCandle[4])
+                        };
                     });
-                    
                     if (!active) return;
 
-                    const data: ChartItem[] = response.data.map((item: any) => {
+                    const data: ChartItem[] = formatData.map((item: any) => {
                         let cleanTime = item.time;
                         if (typeof cleanTime === 'string' || cleanTime instanceof Date) {
                             cleanTime = Math.floor(new Date(cleanTime).getTime() / 1000);
@@ -180,7 +193,7 @@ export default function TradeCharts({ symbol }: { symbol: string }) {
 
                     setIsLoading(false);
                 } catch (err) {
-                    if (active) setTimeout(rawData, 3000);
+                    if (active) setTimeout(rawData, 7000);
                 }
             };
 

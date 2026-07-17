@@ -1,12 +1,12 @@
-
 import { create } from "zustand";
 
-interface livePositionData{
+interface livePositionData {
     pnl: number,
     currentPrice: number, 
     symbol: string
 }
-interface candleData{
+
+interface candleData {
     time: number;
     open: number;
     high: number;
@@ -14,23 +14,27 @@ interface candleData{
     close: number;
 }
 
-interface State{
+interface State {
     balance: number;
     setBalance: (newBalance: number) => void;
-    userId: string | null
-    jwt: string | null
-    symbol: string | null
-    isLoggedIn: boolean
-    setIsLoggedIn: (isLoggedIn: boolean) => void
-    setUser: (userId: string, jwt: string) => void
-    logout: () => void
+    userId: string | null;
+    jwt: string | null;
+    symbol: string | null;
+    isLoggedIn: boolean;
+    setIsLoggedIn: (isLoggedIn: boolean) => void;
+    setUser: (userId: string, jwt: string) => void;
+    logout: () => void;
     setSymbol: (newSymbol: string) => void;
-    livePositions:Record<string , livePositionData>;
-    ChartData:Record<string , candleData>;
+    livePositions: Record<string , livePositionData>;
+    ChartData: Record<string , candleData>;
     livePrice: Record<string , number>;
-    setLivePosition:(positionId: string , data: livePositionData) => void;
-    setChartData:(symbol: string , data: candleData) => void;
-    setLivePrice:(symbol: string , price: number) => void;
+    setLivePosition: (positionId: string , data: livePositionData) => void;
+    setChartData: (symbol: string , data: candleData) => void;
+    setLivePrice: (symbol: string , price: number) => void;
+    
+   
+    refreshTrigger: number;
+    triggerRefresh: () => void;
 }
 
 export const useStore = create<State>((set) => ({
@@ -56,11 +60,12 @@ export const useStore = create<State>((set) => ({
         balance: 0 
     }),
 
-    livePositions:{},
-    livePrice:{},
-    ChartData:{},
+    livePositions: {},
+    livePrice: {},
+    ChartData: {},
+    
     setLivePosition: (positionId , data) => set((state) =>({
-        livePositions:{
+        livePositions: {
             ...state.livePositions,
             [positionId]: data
         }
@@ -76,5 +81,9 @@ export const useStore = create<State>((set) => ({
             ...state.ChartData,  
             [symbol]: data        
         }
-    }))
-}))
+    })),
+
+    
+    refreshTrigger: 0,
+    triggerRefresh: () => set((state) => ({ refreshTrigger: state.refreshTrigger + 1 }))
+}));
